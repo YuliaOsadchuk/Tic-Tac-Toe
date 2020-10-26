@@ -6,3 +6,4 @@ content:
 - Initializing an array of longs
 - Initializing an array of integers
 - The sum of array elements
+- The index of the first max in an array
