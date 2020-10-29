@@ -18,8 +18,43 @@ public class Main {
             }
         }
         printArray(array);
-        checkWinXOrO(array);
-        System.out.println(status);
+        //checkWinXOrO(array);
+        //System.out.println(status);
+        int iCoordinates = 0;
+        int jCoordinates = 0;
+        while (true) {
+            System.out.println("Enter the coordinates: ");
+
+            try {
+                iCoordinates = scanner.nextInt();
+            } catch (Exception e) {
+                System.out.println("You should enter numbers!");
+                continue;
+            }
+
+            try {
+                jCoordinates = scanner.nextInt();
+            } catch (Exception e) {
+                System.out.println("You should enter numbers!");
+                continue;
+            }
+
+            iCoordinates--;
+            jCoordinates--;
+            if (iCoordinates < 0 || iCoordinates > 2 || jCoordinates < 0 || jCoordinates > 2) {
+                System.out.println("Coordinates should be from 1 to 3!");
+                continue;
+            }
+
+            jCoordinates = Math.abs(jCoordinates - 2);
+            if (array[jCoordinates][iCoordinates] != '_') {
+                System.out.println("This cell is occupied! Choose another one!");
+            } else {
+                break;
+            }
+        }
+        array[jCoordinates][iCoordinates] = 'X';
+        printArray(array);
     }
 
     public static void printArray(char[][] array) {
