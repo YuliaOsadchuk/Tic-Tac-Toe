@@ -7,6 +7,8 @@ public class Main {
     public static boolean xWin = false;
     public static boolean oWin = false;
     public static boolean draw = false;
+    public static boolean gameOver = false;
+
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -19,21 +21,23 @@ public class Main {
         printArray(array);
         boolean moveX = true;
         boolean moveO = false;
+        boolean coordinateEntered = false;
         int iCoordinates = 0;
         int jCoordinates = 0;
-        while (!xWin || !oWin || !draw) {
-
-            while (true) {
+        while (!gameOver) {
+            while (!coordinateEntered) {
                 System.out.println("Enter the coordinates: ");
+                String s = scanner.next();
                 try {
-                    iCoordinates = scanner.nextInt();
+                    iCoordinates = Integer.parseInt(s);
                 } catch (Exception e) {
                     System.out.println("You should enter numbers!");
                     continue;
                 }
 
                 try {
-                    jCoordinates = scanner.nextInt();
+                    s = scanner.next();
+                    jCoordinates = Integer.parseInt(s);
                 } catch (Exception e) {
                     System.out.println("You should enter numbers!");
                     continue;
@@ -50,18 +54,18 @@ public class Main {
                 if (array[jCoordinates][iCoordinates] != '_') {
                     System.out.println("This cell is occupied! Choose another one!");
                 } else {
-                    break;
+                    coordinateEntered = true;
                 }
             }
+
             if (moveX) {
                 array[jCoordinates][iCoordinates] = 'X';
                 moveX = false;
-                moveO = true;
             } else {
                 array[jCoordinates][iCoordinates] = 'O';
                 moveX = true;
-                moveO = false;
             }
+            coordinateEntered = false;
             checkWinXOrO(array);
             printArray(array);
         }
@@ -83,8 +87,6 @@ public class Main {
     }
 
     public static void checkWinXOrO(char[][] array) {
-        boolean xWin = false;
-        boolean oWin = false;
         for (int i = 0; i < array.length; i++) {
             if (array[i][0] == 88 && array[i][0] == array[i][1] && array[i][0] == array[i][2] ||
                     array[0][i] == 88 && array[0][i] == array[1][i] && array[0][i] == array[2][i]) {
@@ -111,8 +113,10 @@ public class Main {
             status = "Impossible";
         } else if (xWin) {
             status = "X wins";
+            gameOver = true;
         } else if (oWin) {
             status = "O wins";
+            gameOver = true;
         } else {
             checkEmptyCells(array);
         }
@@ -143,7 +147,9 @@ public class Main {
                 }
             }
         }
+        draw = true;
         status = "Draw";
+        gameOver = true;
     }
 
     public static void makeMove() {
