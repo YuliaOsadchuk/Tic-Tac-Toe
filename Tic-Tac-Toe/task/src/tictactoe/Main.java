@@ -4,57 +4,69 @@ import java.util.Scanner;
 
 public class Main {
     public static String status = "";
+    public static boolean xWin = false;
+    public static boolean oWin = false;
+    public static boolean draw = false;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter cells: ");
-        String s = scanner.next();
         char[][] array = new char[3][3];
-        int index = 0;
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[i].length; j++) {
-                array[i][j] = s.charAt(index);
-                index++;
+                array[i][j] = '_';
             }
         }
         printArray(array);
-        //checkWinXOrO(array);
-        //System.out.println(status);
+        boolean moveX = true;
+        boolean moveO = false;
         int iCoordinates = 0;
         int jCoordinates = 0;
-        while (true) {
-            System.out.println("Enter the coordinates: ");
+        while (!xWin || !oWin || !draw) {
 
-            try {
-                iCoordinates = scanner.nextInt();
-            } catch (Exception e) {
-                System.out.println("You should enter numbers!");
-                continue;
+            while (true) {
+                System.out.println("Enter the coordinates: ");
+                try {
+                    iCoordinates = scanner.nextInt();
+                } catch (Exception e) {
+                    System.out.println("You should enter numbers!");
+                    continue;
+                }
+
+                try {
+                    jCoordinates = scanner.nextInt();
+                } catch (Exception e) {
+                    System.out.println("You should enter numbers!");
+                    continue;
+                }
+
+                iCoordinates--;
+                jCoordinates--;
+                if (iCoordinates < 0 || iCoordinates > 2 || jCoordinates < 0 || jCoordinates > 2) {
+                    System.out.println("Coordinates should be from 1 to 3!");
+                    continue;
+                }
+
+                jCoordinates = Math.abs(jCoordinates - 2);
+                if (array[jCoordinates][iCoordinates] != '_') {
+                    System.out.println("This cell is occupied! Choose another one!");
+                } else {
+                    break;
+                }
             }
-
-            try {
-                jCoordinates = scanner.nextInt();
-            } catch (Exception e) {
-                System.out.println("You should enter numbers!");
-                continue;
-            }
-
-            iCoordinates--;
-            jCoordinates--;
-            if (iCoordinates < 0 || iCoordinates > 2 || jCoordinates < 0 || jCoordinates > 2) {
-                System.out.println("Coordinates should be from 1 to 3!");
-                continue;
-            }
-
-            jCoordinates = Math.abs(jCoordinates - 2);
-            if (array[jCoordinates][iCoordinates] != '_') {
-                System.out.println("This cell is occupied! Choose another one!");
+            if (moveX) {
+                array[jCoordinates][iCoordinates] = 'X';
+                moveX = false;
+                moveO = true;
             } else {
-                break;
+                array[jCoordinates][iCoordinates] = 'O';
+                moveX = true;
+                moveO = false;
             }
+            checkWinXOrO(array);
+            printArray(array);
         }
-        array[jCoordinates][iCoordinates] = 'X';
-        printArray(array);
+
+        System.out.println(status);
     }
 
     public static void printArray(char[][] array) {
@@ -106,7 +118,6 @@ public class Main {
         }
     }
 
-
     public static void checkEmptyCells(char[][] array) {
         int x = 0;
         int o = 0;
@@ -133,5 +144,9 @@ public class Main {
             }
         }
         status = "Draw";
+    }
+
+    public static void makeMove() {
+
     }
 }
